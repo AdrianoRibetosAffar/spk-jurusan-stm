@@ -1,5 +1,5 @@
 <?php
-// Step 1: Definisikan Bobot untuk Setiap Pernyataan (10 Pernyataan)
+// Bobot pertanyaan ini
 $bobot = [
     "q1" => 0.1, 
     "q2" => 0.1,
@@ -13,16 +13,16 @@ $bobot = [
     "q10" => 0.1,
 ];
 
-// Step 2: Data Jawaban Siswa (Nilai dari 1-5 untuk setiap pernyataan)
+// data jawaban siswa dari pernyataan
 $jawabanSiswa = [];
 for ($i = 1; $i <= 10; $i++) {
     $key = "q$i";
     $jawabanSiswa[$key] = isset($_POST[$key]) ? (int)$_POST[$key] : 0;
 }
 
-// Step 3: Definisikan Jurusan dan Nilai Kriteria Setiap Jurusan
+// Bobot jurusan berdasarkan kriteria
 $jurusan = [
-    "Teknik Informatika" => [
+    "TKJ" => [
         "q1" => 5,
         "q2" => 5,
         "q3" => 3,
@@ -34,7 +34,7 @@ $jurusan = [
         "q9" => 5,
         "q10" => 3,
     ],
-    "Seni Rupa" => [
+    "Elektro" => [
         "q1" => 2,
         "q2" => 3,
         "q3" => 4,
@@ -46,7 +46,7 @@ $jurusan = [
         "q9" => 1,
         "q10" => 4,
     ],
-    "Biologi" => [
+    "Listrik" => [
         "q1" => 3,
         "q2" => 3,
         "q3" => 2,
@@ -58,10 +58,10 @@ $jurusan = [
         "q9" => 3,
         "q10" => 2,
     ],
-    // Tambahkan jurusan lainnya sesuai kebutuhan
+    // sa mo tambahkan jurusan lain disini nanti
 ];
 
-// Step 4: Normalisasi Nilai
+// normalisasi nilai jawaban siswa
 function normalisasi($jurusan) {
     $normalisasi = [];
     foreach ($jurusan as $namaJurusan => $kriteria) {
@@ -76,7 +76,7 @@ function normalisasi($jurusan) {
 
 $normalisasiNilai = normalisasi($jurusan);
 
-// Step 5: Hitung Skor Akhir
+// hitung nilai normalisasi berdasarkan jawaban siswa
 function hitungSkor($bobot, $normalisasi) {
     $skor = [];
     foreach ($normalisasi as $namaJurusan => $kriteria) {
@@ -90,7 +90,7 @@ function hitungSkor($bobot, $normalisasi) {
 
 $skorAkhir = hitungSkor($bobot, $normalisasiNilai);
 
-// Step 6: Tentukan Jurusan Terbaik
+//Ini tentukan jurusan terbaik berdasarkan skor akhir
 arsort($skorAkhir);
 $jurusanTerbaik = key($skorAkhir);
 session_start();
@@ -100,7 +100,7 @@ $_SESSION['jurusanTerbaik'] = $jurusanTerbaik;
 $_SESSION['skorAkhir'] = $skorAkhir;
 $_SESSION['jawabanSiswa'] = $jawabanSiswa;
 
-// Redirect ke halaman hasil
+//ini untk ke halaman hasil
 header("Location: hasil.php");
 exit();
 ?>
